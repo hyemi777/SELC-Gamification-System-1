@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col">
             
-            <form action = "/modifyPoints" method = "POST">
+            <form onsubmit="test(event)">
                 <div class="form-group">
                     <label for="exampleInputEmail1">
                         Name
@@ -10,7 +10,7 @@
                     <select class="form-control" name = "currentUser">
 
                         <% for(var i=0; i < dataArray.length; i++) { %>
-                        <option> <%= dataArray[i].name %> </option>
+                        <option> <%= dataArray[i].email %> </option>
                         <% } %>
                     </select>
 
@@ -19,7 +19,7 @@
                     <label for="exampleInputPassword1">
                         Points
                     </label>
-                    <input type="number" class="form-control" name = "points">
+                    <input id = "points" type="number" class="form-control" name = "points">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -29,3 +29,24 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+<script>
+   
+    function test(e) {
+        let currentPoints = parseInt(document.getElementById("points").value);
+        e.preventDefault();
+        fetch("/modifyPoints", {
+                  method: "POST",
+                  headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+                  },
+                  body: JSON.stringify({ 
+                    points: currentPoints
+                   
+                  }),
+                });
+    }
+</script>

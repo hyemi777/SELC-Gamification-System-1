@@ -119,14 +119,9 @@ app.get("/pointsForm", function (req, res) {
  
   db.collection("test").get().then(function (querySnapshot) {
     let dataArray = [];
-
     querySnapshot.forEach(function (doc) {
-
       convertToArray(dataArray, doc);
-      //console.log(109, dataArray);
     });
-
-    //console.log(112, dataArray);
     res.render("pointsForm.ejs", {
       layout: 'Layout/layout.ejs',
       dataArray,
@@ -137,18 +132,16 @@ app.get("/pointsForm", function (req, res) {
 });
 
 app.post("/modifyPoints", function (req, res) {
-  const sessionCookie = req.cookies.session || "";
 
-  admin
-    .auth()
-    .verifySessionCookie(sessionCookie, true /** checkRevoked */)
-    .then(() => {
-      console.log(130, req.body.currentUser);
-      console.log(131, req.body.points);
-    })
-    .catch((error) => {
-      res.redirect("/login");
-    });
+  console.log(136, req.body);
+  console.log(136, "Increasing points");
+  const currentDB = db.collection("test").doc("kZM879GwU5ZBbkkz6smwBs9mQJD2");
+  currentDB.update({
+    points: req.body.points,
+  })
+
+
+ 
 
 });
 
