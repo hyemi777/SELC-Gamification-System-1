@@ -7,10 +7,10 @@
                     <label for="exampleInputEmail1">
                         Name
                     </label>
-                    <select class="form-control" name = "currentUser">
+                    <select id = "currentUser" class="form-control" name = "currentUser">
 
                         <% for(var i=0; i < dataArray.length; i++) { %>
-                        <option> <%= dataArray[i].firstName %> <%= dataArray[i].lastName %> (<%= dataArray[i].email %>) </option>
+                        <option> <%= i %> -  <%= dataArray[i].firstName %> <%= dataArray[i].lastName %> (<%= dataArray[i].email %>) </option>
                         <% } %>
                     </select>
 
@@ -32,9 +32,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script>
-   
+  
     function test(e) {
+
         let currentPoints = parseInt(document.getElementById("points").value);
+        let currentUser = document.getElementById("currentUser").value;
+     
         e.preventDefault();
         fetch("/modifyPoints", {
                   method: "POST",
@@ -44,8 +47,8 @@
                     "CSRF-Token": Cookies.get("XSRF-TOKEN"),
                   },
                   body: JSON.stringify({ 
-                    points: currentPoints
-                   
+                    points: currentPoints,
+                    currentUser,
                   }),
                 });
     }

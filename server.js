@@ -84,7 +84,7 @@ app.get("/test", function (req, res) {
   db.collection("test").get().then(function (querySnapshot) {
 
     querySnapshot.forEach(function (doc) {
-
+      console.log(87, doc.data());
       testObject[`${doc.data}`] = doc.data();
     });
 
@@ -94,6 +94,7 @@ app.get("/test", function (req, res) {
 
 
   res.render("test.ejs", {
+    layout: "Layout/layout.ejs",
     pagename: "test"
   })
 });
@@ -116,12 +117,14 @@ app.get("/test2", function (req, res) {
 
 app.get("/pointsForm", function (req, res) {
 
+
  
   db.collection("test").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
       convertToArray(dataArray, doc);
     });
+    //console.log(125, dataArray);
     res.render("pointsForm.ejs", {
       layout: 'Layout/layout.ejs',
       dataArray,
@@ -133,12 +136,27 @@ app.get("/pointsForm", function (req, res) {
 
 app.post("/modifyPoints", function (req, res) {
 
-  console.log(136, req.body);
-  console.log(136, "Increasing points");
-  const currentDB = db.collection("test").doc("kZM879GwU5ZBbkkz6smwBs9mQJD2");
-  currentDB.update({
-    points: req.body.points,
-  })
+
+  let currentUser = req.body.currentUser;
+  let currentUserIndex = currentUser[0];
+  console.log(147, currentUserIndex);
+
+  db.collection("test").get().then(function (querySnapshot) {
+    let dataArray = [];
+    querySnapshot.forEach(function (doc) {
+     
+      convertToArray(dataArray, doc);
+    });
+    console.log(150, dataArray);
+    let currentUserUID = dataArray[currentUserIndex].uid;
+
+    const currentDB = db.collection("test").doc(currentUserUID);
+    currentDB.update({
+      points: req.body.points,
+    })
+  });
+
+
 
 
  
