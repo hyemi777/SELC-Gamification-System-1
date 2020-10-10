@@ -10,7 +10,7 @@
                     <select class="form-control" name = "currentUser">
 
                         <% for(var i=0; i < dataArray.length; i++) { %>
-                        <option> <%= dataArray[i].email %> </option>
+                        <option> <%= dataArray[i].firstName %> <%= dataArray[i].lastName %> (<%= dataArray[i].email %>) </option>
                         <% } %>
                     </select>
 

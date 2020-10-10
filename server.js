@@ -149,12 +149,14 @@ app.post("/modifyPoints", function (req, res) {
 
 
 app.post("/sessionLogin", (req, res) => {
-  console.log(162, "Session login");
-  console.log(163, "uid is");
-  console.log(164, req.body);
+
+
 
   db.collection("test").doc(req.body.uid).set({
+    uid: req.body.uid,
     email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName
   });
 
   const idToken = req.body.idToken.toString();
