@@ -38,8 +38,10 @@ function convertToArray(dataArray, doc) {
 }
 
 app.get("/login", function (req, res) {
-  res.render("login.ejs",
-    { layout: 'Layout/layout.ejs' }
+  res.render("login.ejs", { 
+    layout: 'Layout/layout.ejs', 
+    pagename: "login"
+  }
   );
 });
 
@@ -97,14 +99,19 @@ app.get("/test", function (req, res) {
 });
 
 app.get("/test2", function (req, res) {
-  admin.auth().getUserByEmail("test@gmail.com")
-    .then(function (userRecord) {
-      // See the UserRecord reference doc for the contents of userRecord.
-      console.log('Successfully fetched user data:', userRecord.toJSON());
-    })
-    .catch(function (error) {
-      console.log('Error fetching user data:', error);
-    });
+
+
+
+
+
+  // admin.auth().getUserByEmail("test@gmail.com")
+  //   .then(function (userRecord) {
+  //     // See the UserRecord reference doc for the contents of userRecord.
+  //     console.log('Successfully fetched user data:', userRecord.toJSON());
+  //   })
+  //   .catch(function (error) {
+  //     console.log('Error fetching user data:', error);
+  //   });
 });
 
 app.get("/pointsForm", function (req, res) {
@@ -149,10 +156,13 @@ app.post("/modifyPoints", function (req, res) {
 
 
 app.post("/sessionLogin", (req, res) => {
-  console.log(62, "Session login");
+  console.log(162, "Session login");
+  console.log(163, "uid is");
+  console.log(164, req.body);
 
-
-  //db.collection("test").add({ name: "Billy" })
+  db.collection("test").doc(req.body.uid).set({
+    email: req.body.email,
+  });
 
   const idToken = req.body.idToken.toString();
 

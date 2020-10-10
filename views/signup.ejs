@@ -60,7 +60,7 @@
             .createUserWithEmailAndPassword(login, password)
             .then(({ user }) => {
               return user.getIdToken().then((idToken) => {
-         
+                console.log(63, user.uid);
                 return fetch("/sessionLogin", {
                   method: "POST",
                   headers: {
@@ -68,7 +68,11 @@
                     "Content-Type": "application/json",
                     "CSRF-Token": Cookies.get("XSRF-TOKEN"),
                   },
-                  body: JSON.stringify({ idToken }),
+                  body: JSON.stringify({ 
+                    idToken,
+                    "uid": user.uid, 
+                    email: login,
+                  }),
                 });
               
 
@@ -78,7 +82,7 @@
               return firebase.auth().signOut();
             })
             .then(() => {
-              window.location.assign("/profile");
+              //window.location.assign("/profile");
             });
           return false;
         });
