@@ -20,7 +20,7 @@ const app = express();
 const db = admin.firestore()
 
 app.engine("html", require("ejs").renderFile);
-app.use(express.static("static"));
+app.use(express.static(__dirname + "/public"));
 
 app.use(expressLayouts);
 app.use(bodyParser.json());
@@ -32,24 +32,35 @@ app.all("*", (req, res, next) => {
   next();
 });
 
+function convertToArray(dataArray, doc) {
+
+  return dataArray.push(doc.data());
+}
+
 app.get("/login", function (req, res) {
-  res.render("login.ejs", {
-    data: "this is data"
-  });
+  res.render("login.ejs",
+    { layout: 'Layout/layout.ejs' }
+  );
 });
 
 app.get("/signup", function (req, res) {
-  res.render("signup", {layout: 'Layout/layout.ejs'});
+  res.render("signup.ejs", { 
+    layout: 'Layout/layout.ejs',
+    pagename: "signup" 
+  });
 });
 
 app.get("/profile", function (req, res) {
   const sessionCookie = req.cookies.session || "";
-  
+
   admin
     .auth()
     .verifySessionCookie(sessionCookie, true /** checkRevoked */)
     .then(() => {
-      res.render("profile.html");
+      res.render("profile.ejs", {
+        layout: 'Layout/layout.ejs',
+        pagename: "profile"
+      });
     })
     .catch((error) => {
       res.redirect("/login");
@@ -57,18 +68,21 @@ app.get("/profile", function (req, res) {
 });
 
 app.get("/", function (req, res) {
-  res.render("index.html", { layout: 'Layout/layout.ejs'});
+  res.render("index.ejs", { 
+    layout: 'Layout/layout.ejs', 
+    pagename: "home"
+  });
 });
 
 app.get("/test", function (req, res) {
   let testArray = [];
   let testObject = {
- 
+
   };
   db.collection("test").get().then(function (querySnapshot) {
 
     querySnapshot.forEach(function (doc) {
-    
+
       testObject[`${doc.data}`] = doc.data();
     });
 
@@ -78,27 +92,67 @@ app.get("/test", function (req, res) {
 
 
   res.render("test.ejs", {
-
+    pagename: "test"
   })
 });
 
 app.get("/test2", function (req, res) {
   admin.auth().getUserByEmail("test@gmail.com")
-  .then(function(userRecord) {
-    // See the UserRecord reference doc for the contents of userRecord.
-    console.log('Successfully fetched user data:', userRecord.toJSON());
-  })
-  .catch(function(error) {
-    console.log('Error fetching user data:', error);
-  });
+    .then(function (userRecord) {
+      // See the UserRecord reference doc for the contents of userRecord.
+      console.log('Successfully fetched user data:', userRecord.toJSON());
+    })
+    .catch(function (error) {
+      console.log('Error fetching user data:', error);
+    });
 });
+
+app.get("/pointsForm", function (req, res) {
+
+ 
+  db.collection("test").get().then(function (querySnapshot) {
+    let dataArray = [];
+
+    querySnapshot.forEach(function (doc) {
+
+      convertToArray(dataArray, doc);
+      //console.log(109, dataArray);
+    });
+
+    //console.log(112, dataArray);
+    res.render("pointsForm.ejs", {
+      layout: 'Layout/layout.ejs',
+      dataArray,
+      pagename: "pointsForm"
+    });
+  });
+
+});
+
+app.post("/modifyPoints", function (req, res) {
+  const sessionCookie = req.cookies.session || "";
+
+  admin
+    .auth()
+    .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+    .then(() => {
+      console.log(130, req.body.currentUser);
+      console.log(131, req.body.points);
+    })
+    .catch((error) => {
+      res.redirect("/login");
+    });
+
+});
+
+
 
 
 app.post("/sessionLogin", (req, res) => {
   console.log(62, "Session login");
 
 
-  db.collection("test").add({ name: "Billy" })
+  //db.collection("test").add({ name: "Billy" })
 
   const idToken = req.body.idToken.toString();
 
