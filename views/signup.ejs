@@ -84,7 +84,7 @@
         .then(({ user }) => {
           return user.getIdToken().then((idToken) => {
 
-            return fetch("/sessionLogin", {
+            return fetch("/sessionSignup", {
               method: "POST",
               headers: {
                 Accept: "application/json",

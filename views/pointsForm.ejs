@@ -1,16 +1,17 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            
+
             <form onsubmit="test(event)">
                 <div class="form-group">
                     <label for="exampleInputEmail1">
                         Name
                     </label>
-                    <select id = "currentUser" class="form-control" name = "currentUser">
+                    <select id="currentUser" class="form-control" name="currentUser">
 
                         <% for(var i=0; i < dataArray.length; i++) { %>
-                        <option> <%= i %> -  <%= dataArray[i].firstName %> <%= dataArray[i].lastName %> (<%= dataArray[i].email %>) </option>
+                        <option> <%= i %> - <%= dataArray[i].firstName %> <%= dataArray[i].lastName %>
+                            (<%= dataArray[i].email %>) </option>
                         <% } %>
                     </select>
 
@@ -19,37 +20,44 @@
                     <label for="exampleInputPassword1">
                         Points
                     </label>
-                    <input id = "points" type="number" class="form-control" name = "points">
+                    <input id="points" type="number" class="form-control" name="points">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
 
-        
+
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script>
-  
+
     function test(e) {
 
         let currentPoints = parseInt(document.getElementById("points").value);
         let currentUser = document.getElementById("currentUser").value;
-     
+
         e.preventDefault();
         fetch("/modifyPoints", {
-                  method: "POST",
-                  headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "CSRF-Token": Cookies.get("XSRF-TOKEN"),
-                  },
-                  body: JSON.stringify({ 
-                    points: currentPoints,
-                    currentUser,
-                  }),
-                });
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "CSRF-Token": Cookies.get("XSRF-TOKEN"),
+            },
+            body: JSON.stringify({
+                points: currentPoints,
+                currentUser,
+            }),
+        })
+        .then(response => {
+            console.log(56, response);
+            window.location = "/pointsForm";
+        })
+        .catch(function(err) {
+            console.log(59, err);
+        });
     }
 </script>
