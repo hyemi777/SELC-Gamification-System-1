@@ -12,9 +12,31 @@
     </div>
     <div class="col-12 col-md-4">
       <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+       
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
+          <table class="table table-sm">
+            <thead class = "thead-dark">
+              <tr>
+    
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i = dataArray.length - 1; i > (dataArray.length - 4); i--) { %>
+    
+    
+              <tr>
+         
+                <td> <%= dataArray[i].firstName %> <%= dataArray[i].lastName %></td>
+                <td> <%= dataArray[i].email %></td>
+              </tr>
+    
+              <% } %>
+    
+    
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

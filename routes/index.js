@@ -15,7 +15,7 @@ function convertToArray(dataArray, doc) {
 router.get("/", function (req, res) {
 
 
-  db.collection("users").orderBy("points").get().then(function (querySnapshot) {
+  db.collection("users").orderBy("created").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
 
@@ -104,7 +104,7 @@ router.get("/pointsForm", function (req, res) {
         querySnapshot.forEach(function (doc) {
           convertToArray(dataArray, doc);
         });
-        //console.log(125, dataArray);
+        
         res.render("pointsForm.ejs", {
           layout: 'Layout/layout.ejs',
           dataArray,
@@ -175,10 +175,11 @@ router.post("/modifyPoints", function (req, res) {
     });
 
     let currentUserUID = dataArray[0].uid;
+    let currentUserPoints = dataArray[0].points;
 
     const currentDB = db.collection("users").doc(currentUserUID);
     currentDB.update({
-      points: req.body.points,
+      points: req.body.points + currentUserPoints,
     })
 
   });

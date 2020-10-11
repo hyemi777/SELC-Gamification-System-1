@@ -73,7 +73,7 @@ router.post("/sessionSignup", (req, res) => {
         email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        created: firebase.database.ServerValue.TIMESTAMP 
+        created:admin.firestore.Timestamp.now(),
     });
 
     const idToken = req.body.idToken.toString();
