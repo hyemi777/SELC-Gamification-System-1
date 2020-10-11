@@ -21,9 +21,28 @@ router.get("/", function (req, res) {
 
       convertToArray(dataArray, doc);
     });
-    res.render("index.ejs", {
+    res.render("dashboard.ejs", {
       layout: 'Layout/layout.ejs',
-      pagename: "home",
+      pagename: "dashboard",
+      dataArray,
+    });
+  });
+
+
+});
+
+router.get("/leaderboard", function (req, res) {
+
+
+  db.collection("users").orderBy("points").get().then(function (querySnapshot) {
+    let dataArray = [];
+    querySnapshot.forEach(function (doc) {
+
+      convertToArray(dataArray, doc);
+    });
+    res.render("leaderboard.ejs", {
+      layout: 'Layout/layout.ejs',
+      pagename: "leaderboard",
       dataArray,
     });
   });
@@ -73,20 +92,34 @@ router.get("/test2", function (req, res) {
 
 router.get("/pointsForm", function (req, res) {
 
+  const sessionCookie = req.cookies.session || "";
+  
+  admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+      .then(() => {
+
+        db.collection("users").get().then(function (querySnapshot) {
+          let dataArray = [];
+          querySnapshot.forEach(function (doc) {
+            convertToArray(dataArray, doc);
+          });
+          //console.log(125, dataArray);
+          res.render("pointsForm.ejs", {
+            layout: 'Layout/layout.ejs',
+            dataArray,
+            pagename: "pointsForm"
+          });
+        });
+      
 
 
-  db.collection("users").get().then(function (querySnapshot) {
-    let dataArray = [];
-    querySnapshot.forEach(function (doc) {
-      convertToArray(dataArray, doc);
-    });
-    //console.log(125, dataArray);
-    res.render("pointsForm.ejs", {
-      layout: 'Layout/layout.ejs',
-      dataArray,
-      pagename: "pointsForm"
-    });
-  });
+      })
+      .catch((error) => {
+        console.log(100, error);
+          res.redirect("/");
+      });
+
 
 });
 
