@@ -15,7 +15,7 @@ function convertToArray(dataArray, doc) {
 router.get("/", function (req, res) {
 
 
-  db.collection("test").get().then(function (querySnapshot) {
+  db.collection("users").orderBy("points").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
 
@@ -37,10 +37,10 @@ router.get("/test", function (req, res) {
   let testObject = {
 
   };
-  db.collection("test").get().then(function (querySnapshot) {
+  db.collection("users").get().then(function (querySnapshot) {
 
     querySnapshot.forEach(function (doc) {
-      console.log(87, doc.data());
+
       testObject[`${doc.data}`] = doc.data();
     });
 
@@ -75,7 +75,7 @@ router.get("/pointsForm", function (req, res) {
 
 
 
-  db.collection("test").get().then(function (querySnapshot) {
+  db.collection("users").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
       convertToArray(dataArray, doc);
@@ -97,7 +97,7 @@ router.post("/modifyPoints", function (req, res) {
   let currentUserIndex = currentUser[0];
 
 
-  db.collection("test").get().then(function (querySnapshot) {
+  db.collection("users").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
 
@@ -106,13 +106,13 @@ router.post("/modifyPoints", function (req, res) {
 
     let currentUserUID = dataArray[currentUserIndex].uid;
 
-    const currentDB = db.collection("test").doc(currentUserUID);
+    const currentDB = db.collection("users").doc(currentUserUID);
     currentDB.update({
       points: req.body.points,
     })
 
   });
-  console.log(116);
+
   res.redirect(301, "/");
 
 

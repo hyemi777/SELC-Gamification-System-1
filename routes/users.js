@@ -24,7 +24,7 @@ router.get("/signup", function (req, res) {
 
 router.get("/profile", function (req, res) {
     const sessionCookie = req.cookies.session || "";
-
+  
     admin
         .auth()
         .verifySessionCookie(sessionCookie, true /** checkRevoked */)
@@ -35,7 +35,7 @@ router.get("/profile", function (req, res) {
             });
         })
         .catch((error) => {
-            res.redirect("/login");
+            res.redirect("/");
         });
 });
 
@@ -46,10 +46,7 @@ router.get("/profile", function (req, res) {
 router.post("/sessionLogin", (req, res) => {
 
 
-
-
     const idToken = req.body.idToken.toString();
-
     const expiresIn = 60 * 60 * 24 * 5 * 1000;
 
     admin
@@ -71,7 +68,7 @@ router.post("/sessionSignup", (req, res) => {
 
 
 
-    db.collection("test").doc(req.body.uid).set({
+    db.collection("users").doc(req.body.uid).set({
         uid: req.body.uid,
         email: req.body.email,
         firstName: req.body.firstName,
