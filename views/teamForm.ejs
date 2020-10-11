@@ -18,9 +18,14 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">
-                        Points
+                        Team
                     </label>
-                    <input id="points" type="number" class="form-control" name="points">
+                    <select id="selectedTeam" type="number" class="form-control" name="selectedTeam">
+                        <option> Team 1</option>
+                        <option> Team 2</option>
+                        <option> Team 3</option>
+                        <option> Team 4</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -36,11 +41,11 @@
 
     function test(e) {
 
-        let currentPoints = parseInt(document.getElementById("points").value);
+        let selectedTeam = document.getElementById("selectedTeam").value;
         let currentUser = document.getElementById("currentUser").value;
 
         e.preventDefault();
-        fetch("/modifyPoints", {
+        fetch("/modifyTeam", {
             method: "POST",
             headers: {
                 Accept: "application/json",
@@ -48,16 +53,16 @@
                 "CSRF-Token": Cookies.get("XSRF-TOKEN"),
             },
             body: JSON.stringify({
-                points: currentPoints,
+                teamName: selectedTeam,
                 currentUser,
             }),
         })
-        .then(response => {
-       
-            window.location = "/pointsForm";
-        })
-        .catch(function(err) {
-           
-        });
+            .then(response => {
+
+                window.location = "/teamForm";
+            })
+            .catch(function (err) {
+
+            });
     }
 </script>

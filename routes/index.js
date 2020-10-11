@@ -56,10 +56,10 @@ router.get("/test", function (req, res) {
   let testObject = {
 
   };
-  db.collection("users").get().then(function (querySnapshot) {
+  db.collection("users").where('email', '==','test323@gmail.com').get().then(function (querySnapshot) {
 
     querySnapshot.forEach(function (doc) {
-
+      console.log(62, doc.data());
       testObject[`${doc.data}`] = doc.data();
     });
 
@@ -93,32 +93,65 @@ router.get("/test2", function (req, res) {
 router.get("/pointsForm", function (req, res) {
 
   const sessionCookie = req.cookies.session || "";
-  
+
   admin
-      .auth()
-      .verifySessionCookie(sessionCookie, true /** checkRevoked */)
-      .then(() => {
+    .auth()
+    .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+    .then(() => {
 
-        db.collection("users").get().then(function (querySnapshot) {
-          let dataArray = [];
-          querySnapshot.forEach(function (doc) {
-            convertToArray(dataArray, doc);
-          });
-          //console.log(125, dataArray);
-          res.render("pointsForm.ejs", {
-            layout: 'Layout/layout.ejs',
-            dataArray,
-            pagename: "pointsForm"
-          });
+      db.collection("users").get().then(function (querySnapshot) {
+        let dataArray = [];
+        querySnapshot.forEach(function (doc) {
+          convertToArray(dataArray, doc);
         });
-      
-
-
-      })
-      .catch((error) => {
-        console.log(100, error);
-          res.redirect("/");
+        //console.log(125, dataArray);
+        res.render("pointsForm.ejs", {
+          layout: 'Layout/layout.ejs',
+          dataArray,
+          pagename: "pointsForm"
+        });
       });
+
+
+
+    })
+    .catch((error) => {
+      console.log(100, error);
+      res.redirect("/");
+    });
+
+
+});
+
+router.get("/teamForm", function (req, res) {
+
+  const sessionCookie = req.cookies.session || "";
+
+  admin
+    .auth()
+    .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+    .then(() => {
+
+      db.collection("users").get().then(function (querySnapshot) {
+        let dataArray = [];
+        querySnapshot.forEach(function (doc) {
+          convertToArray(dataArray, doc);
+        });
+        //console.log(125, dataArray);
+        res.render("teamForm.ejs", {
+          layout: 'Layout/layout.ejs',
+          dataArray,
+          pagename: "pointsForm"
+        });
+      });
+
+
+
+    })
+    .catch((error) => {
+      console.log(100, error);
+      res.redirect("/");
+    });
 
 
 });
@@ -127,17 +160,21 @@ router.post("/modifyPoints", function (req, res) {
 
 
   let currentUser = req.body.currentUser;
-  let currentUserIndex = currentUser[0];
+
+  let startIndexOfEmail = currentUser.indexOf("(");
+  let endIndexOfEmail = currentUser.indexOf(")");
+
+  let userEmail = currentUser.substring((startIndexOfEmail + 1), endIndexOfEmail);
 
 
-  db.collection("users").get().then(function (querySnapshot) {
+  db.collection("users").where("email", "==", userEmail).get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
 
       convertToArray(dataArray, doc);
     });
 
-    let currentUserUID = dataArray[currentUserIndex].uid;
+    let currentUserUID = dataArray[0].uid;
 
     const currentDB = db.collection("users").doc(currentUserUID);
     currentDB.update({
@@ -150,6 +187,39 @@ router.post("/modifyPoints", function (req, res) {
 
 
 });
+
+router.post("/modifyTeam", function (req, res) {
+
+
+  let currentUser = req.body.currentUser;
+
+  let startIndexOfEmail = currentUser.indexOf("(");
+  let endIndexOfEmail = currentUser.indexOf(")");
+
+  let userEmail = currentUser.substring((startIndexOfEmail + 1), endIndexOfEmail);
+
+
+  db.collection("users").where("email", "==", userEmail).get().then(function (querySnapshot) {
+    let dataArray = [];
+    querySnapshot.forEach(function (doc) {
+
+      convertToArray(dataArray, doc);
+    });
+
+    let currentUserUID = dataArray[0].uid;
+
+    const currentDB = db.collection("users").doc(currentUserUID);
+    currentDB.update({
+      teamName: req.body.teamName,
+    })
+
+  });
+
+  res.redirect(301, "/");
+
+
+});
+
 
 
 module.exports = router;
