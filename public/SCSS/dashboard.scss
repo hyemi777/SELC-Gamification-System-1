@@ -1,4 +1,5 @@
 $UVSASE-blue: #009fb7;
+$UVSASE-dark-blue: #114b5f;
 
 
 .dark-blue-bg-color {
@@ -7,6 +8,16 @@ $UVSASE-blue: #009fb7;
 
 .thead-blue {
     background-color: $UVSASE-blue;
+}
+
+.btn-UVSASE-darkblue {
+    background-color: $UVSASE-dark-blue;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.btn-UVSASE-darkblue:hover {
+    color: $UVSASE-blue;
 }
 
 .maxIconSize {

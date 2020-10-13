@@ -8,6 +8,17 @@
             <%= dataArray.length %> Accounts
           </h5>
         </div>
+        <div class="d-flex justify-content-around w-100 mb-3">
+
+          <a href="/pointsForm" class="btn btn-UVSASE-darkblue btn-lg " tabindex="-1" role="button" aria-disabled="true">
+            Edit Points
+          </a>
+
+          <a href="/teamForm" class="btn btn-UVSASE-darkblue btn-lg " tabindex="-1" role="button" aria-disabled="true">
+            Edit Teams
+          </a>
+
+        </div>
       </div>
     </div>
 
@@ -30,7 +41,7 @@
                     <td>
                       <%= dataArray2[i].name %>
                     </td>
-                    <td class = "text-center">
+                    <td class="text-center">
                       <%= dataArray2[i].attendees.length %>
                     </td>
                   </tr>
@@ -49,27 +60,21 @@
       <table class="table table-sm">
         <thead class="thead-blue text-white">
           <tr>
-
             <th scope="col">Place</th>
             <th scope="col">Name</th>
-            <th scope="col">Points</th>
+            <th scope="col">Email</th>
           </tr>
         </thead>
         <tbody>
           <% for(var i = 0; i < dataArray.length; i++) { %>
-
-
           <tr>
             <th scope="row">
               <%= i + 1%>
             </th>
             <td> <%= dataArray[i].firstName %> <%= dataArray[i].lastName %></td>
-            <td> <%= dataArray[i].points %></td>
+            <td> <%= dataArray[i].email %></td>
           </tr>
-
           <% } %>
-
-
         </tbody>
       </table>
     </div>
