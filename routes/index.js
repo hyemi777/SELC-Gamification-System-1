@@ -63,44 +63,6 @@ router.get("/leaderboard", function (req, res) {
 });
 
 
-router.get("/test", function (req, res) {
-  let testArray = [];
-  let testObject = {
-
-  };
-  db.collection("users").where('email', '==','test323@gmail.com').get().then(function (querySnapshot) {
-
-    querySnapshot.forEach(function (doc) {
-      console.log(62, doc.data());
-      testObject[`${doc.data}`] = doc.data();
-    });
-
-    testArray.push(testObject);
-
-  });
-
-
-  res.render("test.ejs", {
-    layout: "Layout/layout.ejs",
-    pagename: "test"
-  })
-});
-
-router.get("/test2", function (req, res) {
-
-
-
-
-
-  // admin.auth().getUserByEmail("test@gmail.com")
-  //   .then(function (userRecord) {
-  //     // See the UserRecord reference doc for the contents of userRecord.
-  //     console.log('Successfully fetched user data:', userRecord.toJSON());
-  //   })
-  //   .catch(function (error) {
-  //     console.log('Error fetching user data:', error);
-  //   });
-});
 
 router.get("/pointsForm", function (req, res) {
 
