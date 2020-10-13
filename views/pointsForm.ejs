@@ -11,14 +11,15 @@
 
                         <% for(var i=0; i < dataArray.length; i++) { %>
                         <option> <%= dataArray[i].firstName %> <%= dataArray[i].lastName %>
-                            (<%= dataArray[i].email %>) </option>
+                            (<%= dataArray[i].email %>) - <%= dataArray[i].points %> Current Points </option>
                         <% } %>
                     </select>
 
                 </div>
+                
                 <div class="form-group">
                     <label for="exampleInputPassword1">
-                        Points
+                        Points to Add
                     </label>
                     <input id="points" type="number" class="form-control" name="points">
                 </div>

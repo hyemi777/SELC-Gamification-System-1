@@ -37,7 +37,7 @@ router.get("/", function (req, res) {
         dataArray2
       });
     });
-  
+
   });
 
 
@@ -78,7 +78,7 @@ router.get("/pointsForm", function (req, res) {
         querySnapshot.forEach(function (doc) {
           convertToArray(dataArray, doc);
         });
-        
+        console.log(81, dataArray);
         res.render("pointsForm.ejs", {
           layout: 'Layout/layout.ejs',
           dataArray,
