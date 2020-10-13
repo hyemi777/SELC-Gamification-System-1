@@ -9,7 +9,7 @@ const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://test-73b01.firebaseio.com",
+  databaseURL: process.env.databaseURL,
 });
 
 const csrfMiddleware = csrf({ cookie: true });

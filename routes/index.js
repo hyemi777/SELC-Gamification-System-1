@@ -1,4 +1,5 @@
 
+require('dotenv').config()
 const express = require("express");
 const router = express.Router();
 const admin = require("firebase-admin");
@@ -15,17 +16,28 @@ function convertToArray(dataArray, doc) {
 router.get("/", function (req, res) {
 
 
-  db.collection("users").orderBy("created").get().then(function (querySnapshot) {
+  db.collection("users").orderBy("points", "desc").get().then(function (querySnapshot) {
     let dataArray = [];
     querySnapshot.forEach(function (doc) {
 
       convertToArray(dataArray, doc);
     });
-    res.render("dashboard.ejs", {
-      layout: 'Layout/layout.ejs',
-      pagename: "dashboard",
-      dataArray,
+    db.collection("workshops").get().then(function (querySnapshot) {
+      let dataArray2 = [];
+      querySnapshot.forEach(function (doc) {
+
+        convertToArray(dataArray2, doc);
+      });
+      console.log(31, dataArray2);
+      console.log(32, dataArray2[0].attendees.length);
+      res.render("dashboard.ejs", {
+        layout: 'Layout/layout.ejs',
+        pagename: "dashboard",
+        dataArray,
+        dataArray2
+      });
     });
+  
   });
 
 
@@ -99,7 +111,7 @@ router.get("/pointsForm", function (req, res) {
     .verifySessionCookie(sessionCookie, true /** checkRevoked */)
     .then(() => {
 
-      db.collection("users").get().then(function (querySnapshot) {
+      db.collection("users").orderBy('firstName').get().then(function (querySnapshot) {
         let dataArray = [];
         querySnapshot.forEach(function (doc) {
           convertToArray(dataArray, doc);
